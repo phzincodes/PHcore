@@ -4,7 +4,7 @@ Base PHsys2 `0c7cbce`. O Início Red Eclipse ganhou cards WPF UI, faixa de saúd
 
 Validação neste ambiente Linux com SDK 10.0.404. A base e a solução alterada compilaram com zero erros e avisos. Passaram 60 testes unitários, 48 de segurança portáveis e quatro de integração. Dois testes PostgreSQL ficaram ignorados. O publish self-contained `win-x64` e o instalador Velopack `0.3.0-preview.1` foram gerados. O CLI encontrou o bootstrap Velopack no executável. O instalador é uma prévia sem assinatura.
 
-A navegação FlaUI, os sensores físicos, o tema e o gráfico na janela WPF, o ping do Windows e a instalação em uma máquina limpa precisam de validação nativa. Os testes Windows e os comandos de verificação estão no repositório. A prévia é para diagnóstico local e preserva a configuração de API da distribuição.
+No GitHub Actions, o Windows aprovou 191 testes, incluindo navegação FlaUI, leitura de memória no coletor compartilhado e o comando de ping em loopback com cancelamento. Os dois testes PostgreSQL ignorados no Windows passaram no workflow de backend com banco de testes. A auditoria de dependências transitivas não encontrou vulnerabilidades conhecidas nas fontes consultadas. O renderizador LiveCharts2 também passou um teste separado de desenho em buffer BGRA, com uma série que incluía uma amostra ausente. A leitura dos sensores físicos e a instalação do Setup em uma máquina limpa continuam pendentes. A prévia é para diagnóstico local e preserva a configuração de API da distribuição. [Validação Windows](https://github.com/phzincodes/PHcore/actions/runs/44197743240) · [Backend e PostgreSQL](https://github.com/phzincodes/PHcore/actions/runs/44197743397)
 
 ---
 
