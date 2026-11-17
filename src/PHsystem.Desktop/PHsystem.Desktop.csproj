@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <StartupObject>PHsystem.Desktop.EntryPoint</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="services.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <ProjectReference Include="../PHsystem.Core/PHsystem.Core.csproj" />
+    <ProjectReference Include="../PHsystem.Diagnostics/PHsystem.Diagnostics.csproj" />
+    <ProjectReference Include="../PHsystem.Windows/PHsystem.Windows.csproj" />
+    <ProjectReference Include="../PHsystem.LocalData/PHsystem.LocalData.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.15" />
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.5" />
+    <PackageReference Include="Velopack" Version="1.2.161" />
+    <Content Include="../../assets/**/*" Exclude="../../assets/**/.gitkeep;../../assets/**/*.md" Link="assets/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <ProjectReference Include="../PHsystem.Cleanup/PHsystem.Cleanup.csproj" />
+    <ProjectReference Include="../PHsystem.Drivers/PHsystem.Drivers.csproj" />
+    <ProjectReference Include="../PHsystem.Optimizer/PHsystem.Optimizer.csproj" />
+    <ProjectReference Include="../PHsystem.Community/PHsystem.Community.csproj" />
+    <ProjectReference Include="../PHsystem.SharedContracts/PHsystem.SharedContracts.csproj" />
+  </ItemGroup>
+</Project>
