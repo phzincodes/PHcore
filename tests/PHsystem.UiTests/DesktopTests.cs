@@ -115,6 +115,18 @@ public sealed class DesktopTests
                     Assert.Same(model.Navigation[i], navigation.SelectedItem);
                     Assert.Equal(model.Navigation[i].Title, model.PageTitle);
                 }
+                var settingsTab = Assert.IsType<TabItem>(tabs.Items[(int)AppPage.Settings]);
+                var settings = Assert.IsType<PHsystem.Desktop.Views.SettingsView>(settingsTab.Content);
+                var editor = Assert.IsType<Expander>(settings.FindName("AdvancedPalette"));
+                Assert.False(editor.IsExpanded);
+
+                model.Preferences.ApplyAccentCommand.Execute("#45D6A0");
+                PumpBindings();
+                Assert.Equal(Color.FromRgb(69, 214, 160), Assert.IsType<SolidColorBrush>(settings.FindResource("AccentBrush")).Color);
+                model.Preferences.ThemeName = "Emerald";
+                PumpBindings();
+                Assert.Equal(Color.FromRgb(7, 13, 12), Assert.IsType<SolidColorBrush>(window.Background).Color);
+
                 model.OpenDiagnosticsCommand.Execute(null);
                 Assert.Equal(1, tabs.SelectedIndex);
                 model.ToggleSidebarCommand.Execute(null);

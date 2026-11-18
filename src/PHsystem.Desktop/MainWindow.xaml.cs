@@ -13,7 +13,15 @@ public partial class MainWindow : Window
   DataContext = model;
   void UpdateDashboard() => model.Dashboard.SetActive(IsLoaded && IsVisible && WindowState != WindowState.Minimized &&
       model.NavigationState.Current is AppPage.Home or AppPage.Hardware);
-  void UpdateDashboardTheme(object? sender, EventArgs args) => model.Dashboard.ApplyTheme(model.Preferences.CurrentTheme);
+  ThemeDefinition? appliedTheme = null;
+  void UpdateDashboardTheme(object? sender, EventArgs args)
+  {
+   var theme = model.Preferences.CurrentTheme;
+   if (theme == appliedTheme) return;
+   ThemeManager.Apply(theme, Resources);
+   model.Dashboard.ApplyTheme(theme);
+   appliedTheme = theme;
+  }
   UpdateDashboardTheme(null, EventArgs.Empty);
   model.Preferences.Updated += UpdateDashboardTheme;
   Loaded += (_, _) => UpdateDashboard();
@@ -70,7 +78,7 @@ public partial class MainWindow : Window
   if (SystemParameters.HighContrast) return;
   var enabled = 1;
   _ = DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 20, ref enabled, sizeof(int));
-  var caption = 0x002B1A0D;
+  var caption = 0x0018110E;
   var text = 0x00F4EDE8;
   _ = DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 35, ref caption, sizeof(int));
   _ = DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 36, ref text, sizeof(int));

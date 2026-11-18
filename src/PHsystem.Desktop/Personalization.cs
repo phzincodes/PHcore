@@ -1,8 +1,24 @@
 using System.Collections.ObjectModel;
 using System.IO;
 namespace PHsystem.Desktop;
+public sealed record AccentOption(string Label, string Color);
+
 public sealed partial class UiPreferences
 {
+    public IReadOnlyList<AccentOption> AccentOptions { get; } =
+    [
+        new("Vermelha", "#FF3347"),
+        new("Azul", "#5599FF"),
+        new("Verde", "#45D6A0"),
+        new("Violeta", "#BA8BFF"),
+        new("Âmbar", "#E5BC78"),
+        new("Prateada", "#D5D9E0")
+    ];
+
+    public UiParameterCommand ApplyAccentCommand => new(
+        color => ThemeOperation(() => SetTheme(CurrentTheme with { Accent = (string)color! })),
+        color => color is string selected && AccentOptions.Any(option => option.Color == selected));
+
     public IReadOnlyList<ThemeDefinition> SavedThemes => (values.SavedThemes??[]).Take(20).Where(IsValidTheme).ToArray();
     private static bool IsValidTheme(ThemeDefinition? theme) { try { if(theme is null)return false;ThemeManager.Validate(theme);return true; } catch(InvalidDataException){return false;} }
     private string? background,surface,elevated,border,secondaryAccent,textColor,secondaryText;

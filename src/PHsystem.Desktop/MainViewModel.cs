@@ -52,12 +52,18 @@ public sealed partial class MainViewModel : ObservableObject
     public ObservableCollection<GameProcessChoice> GameProcesses { get; } = [];
     public GameProcessChoice? SelectedProcess { get => selectedProcess; set { selectedProcess = value; Changed(); StartGameCommand.Refresh(); } }
     public string GameStatus => gameMode.Status;
+    public bool IsGameProfileActive => gameMode.IsActive;
     public System.Windows.Media.ImageSource? Logo { get; }
     public CommunityViewModel Community { get; }
     public UiPreferences Preferences { get; }
     public LiveDashboardViewModel Dashboard { get; }
     public ObservableCollection<StorageFile> StorageFiles { get; } = [];
     public ObservableCollection<string> DuplicateFiles { get; } = [];
+    private string? storageResultLabel;
+    public bool HasStorageDirectory => storageDirectory is not null;
+    public bool HasStorageResult => storageResultLabel is not null;
+    public string? StorageResultLabel => storageResultLabel;
+    public string DuplicateResultLabel { get; private set; } = "";
     public string StorageDirectory => storageDirectory ?? "Nenhuma pasta selecionada.";
     public bool StorageConsent { get => storageConsent; set { storageConsent = value; Changed(); AnalyzeStorageCommand.Refresh(); } }
     public bool CompareHashes { get; set; }
@@ -104,18 +110,33 @@ public sealed partial class MainViewModel : ObservableObject
             var dialog = new OpenFolderDialog { Title = "Selecione a única pasta que deseja analisar" };
             if (dialog.ShowDialog() != true) return;
             storageDirectory = dialog.FolderName; StorageConsent = false;
-            StorageFiles.Clear(); DuplicateFiles.Clear(); Changed(nameof(StorageDirectory));
+            StorageFiles.Clear();
+            DuplicateFiles.Clear();
+            storageResultLabel = null;
+            Changed(nameof(StorageDirectory));
+            Changed(nameof(HasStorageDirectory));
+            Changed(nameof(HasStorageResult));
+            Changed(nameof(StorageResultLabel));
         }, () => !busy);
         AnalyzeStorageCommand = new(() => _ = RunAsync(async token =>
         {
             Status = "Analisando somente a pasta escolhida. Nenhum arquivo será excluído.";
-            var analysis = await new StorageAnalyzer().AnalyzeAsync(storageDirectory!, CompareHashes, token);
+            var compareHashes = CompareHashes;
+            var analysis = await new StorageAnalyzer().AnalyzeAsync(storageDirectory!, compareHashes, token);
             StorageFiles.Clear(); DuplicateFiles.Clear();
             foreach (var file in analysis.LargestFiles) StorageFiles.Add(file);
             foreach (var group in analysis.Duplicates) DuplicateFiles.Add($"{group.Paths.Count} arquivos com SHA-256 igual ({group.BytesPerFile:N0} bytes cada): {string.Join(" · ", group.Paths)}");
-            Status = $"Análise somente leitura: {analysis.FilesObserved} arquivos; {analysis.BytesObserved:N0} bytes observados; {analysis.FilesHashed} hashes; {analysis.Skipped} ignorados. Limite atingido: {analysis.Limited}. Nenhum arquivo removido.";
+            storageResultLabel = $"{analysis.FilesObserved:N0} arquivos examinados · {DisplayFormat.Bytes(analysis.BytesObserved)} · {analysis.Skipped:N0} ignorados";
+            if (analysis.Limited) storageResultLabel += " · limite atingido";
+            DuplicateResultLabel = compareHashes
+                ? $"{analysis.FilesHashed:N0} arquivos comparados · {analysis.Duplicates.Count:N0} grupos encontrados"
+                : "Marque a comparação de conteúdo para procurar duplicados.";
+            Changed(nameof(HasStorageResult));
+            Changed(nameof(StorageResultLabel));
+            Changed(nameof(DuplicateResultLabel));
+            Status = "Análise da pasta concluída.";
         }), () => !busy && storageConsent && storageDirectory is not null);
-        gameMode.Changed += (_, _) => System.Windows.Application.Current?.Dispatcher.BeginInvoke(() => Changed(nameof(GameStatus)));
+        gameMode.Changed += (_, _) => System.Windows.Application.Current?.Dispatcher.BeginInvoke(UpdateGamePresentation);
         RefreshProcessesCommand = new(() => _ = RunAsync(_ =>
         {
             GameProcesses.Clear(); SelectedProcess = null;
@@ -126,10 +147,10 @@ public sealed partial class MainViewModel : ObservableObject
         StartGameCommand = new(() => _ = RunAsync(_ =>
         {
             gameMode.Start(new GameProcess(SelectedProcess!.Id));
-            Changed(nameof(GameStatus));
+            UpdateGamePresentation();
             return Task.CompletedTask;
-        }), () => !busy && SelectedProcess is not null);
-        StopGameCommand = new(() => { gameMode.Stop(); Changed(nameof(GameStatus)); });
+        }), () => !busy && !IsGameProfileActive && SelectedProcess is not null);
+        StopGameCommand = new(() => { gameMode.Stop(); UpdateGamePresentation(); }, () => IsGameProfileActive);
         ScanCommand = new(() => _ = RunAsync(async token =>
         {
             await RunScanAsync(token);
@@ -157,6 +178,14 @@ public sealed partial class MainViewModel : ObservableObject
             if (dialog.ShowDialog() == true)
                 await File.WriteAllTextAsync(dialog.FileName, CommunityDraftBuilder.Export(CommunityDraftBuilder.Create(snapshots.Current)), token);
         }), () => !busy && snapshots.Current is not null);
+    }
+
+    private void UpdateGamePresentation()
+    {
+        Changed(nameof(GameStatus));
+        Changed(nameof(IsGameProfileActive));
+        StartGameCommand.Refresh();
+        StopGameCommand.Refresh();
     }
 
     public Task InitializeAsync() => RunAsync(async token =>

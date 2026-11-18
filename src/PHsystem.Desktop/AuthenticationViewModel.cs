@@ -34,7 +34,7 @@ public sealed partial class AuthenticationViewModel : ObservableObject
         }), () => !busy);
     }
     public AuthenticationPage Page { get => page; set { page = value; Status = ""; Changed(); Changed(nameof(Title)); NotifyConnection(); } }
-    public string Title => Page switch { AuthenticationPage.Login => "Bem-vindo de volta", AuthenticationPage.Register => "Crie sua conta", AuthenticationPage.ConfirmEmail => "Confirme seu e-mail", AuthenticationPage.Recovery => "Recuperar acesso", AuthenticationPage.ResetPassword => "Definir nova senha", AuthenticationPage.Terms => "Termos de desenvolvimento", AuthenticationPage.Privacy => "Sua privacidade", _ => "Seu computador, em foco." };
+    public string Title => Page switch { AuthenticationPage.Login => "Entrar na comunidade", AuthenticationPage.Register => "Crie sua conta", AuthenticationPage.ConfirmEmail => "Confirme seu e-mail", AuthenticationPage.Recovery => "Recuperar acesso", AuthenticationPage.ResetPassword => "Definir nova senha", AuthenticationPage.Terms => "Termos de desenvolvimento", AuthenticationPage.Privacy => "Sua privacidade", _ => "Conta do PHsystem" };
     public bool IsReady => !busy;
     public bool IsChecking => connection.Current.State == ApiConnectionState.Checking;
     public bool IsConnected => connection.Available;

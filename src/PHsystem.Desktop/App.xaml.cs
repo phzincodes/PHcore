@@ -36,7 +36,6 @@ public partial class App : Application
         services = collection.BuildServiceProvider();
         var preferences = services.GetRequiredService<UiPreferences>();
         ThemeManager.Apply(preferences.CurrentTheme);
-        preferences.Updated += (_, _) => ThemeManager.Apply(preferences.CurrentTheme);
         services.GetRequiredService<MainWindow>().Show();
     }
     protected override void OnExit(ExitEventArgs e) { services?.Dispose(); base.OnExit(e); }

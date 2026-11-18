@@ -17,6 +17,11 @@ public sealed class GameModeSession : IDisposable
     private GamePriority original;
     private Timer? timer;
     public string Status { get; private set; } = "Nenhum perfil temporário ativo.";
+    public bool IsActive
+    {
+        get { lock (gate) return process is not null; }
+    }
+
     public event EventHandler? Changed;
 
     public void Start(IGameProcess target)
@@ -31,7 +36,7 @@ public sealed class GameModeSession : IDisposable
                 original = target.Priority;
                 target.Priority = GamePriority.AboveNormal;
                 process = target;
-                Status = $"Perfil temporário em {target.Name} (PID {target.Id}). Prioridade AboveNormal; duração máxima 30 minutos. Nenhum ganho de FPS é presumido.";
+                Status = $"{target.Name} (PID {target.Id}) · prioridade Acima do normal · até 30 minutos.";
                 timer = new Timer(_ => Check(), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
                 expiresAt = DateTimeOffset.UtcNow.AddMinutes(30);
             }

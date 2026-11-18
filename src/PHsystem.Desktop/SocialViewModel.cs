@@ -22,7 +22,7 @@ public sealed partial class CommunityViewModel
     private bool hasMore;
     private bool feedLoaded;
     private int feedTabIndex;
-    private string feedStatus = "Carregue as publicações da comunidade. Nenhum post de demonstração é exibido.";
+    private string feedStatus = "Carregue as publicações da comunidade.";
     public string FeedStatus { get => feedStatus; private set { feedStatus = value; Changed(); } }
     public bool HasMore { get => hasMore; private set { hasMore = value; Changed(); } }
     public bool FeedLoaded { get => feedLoaded; private set { feedLoaded = value; Changed(); } }
@@ -121,7 +121,7 @@ public sealed partial class CommunityViewModel
         if (reset) Posts.Clear();
         foreach (var row in result.Items) if (!Posts.Any(p => p.Id == row.Id)) Posts.Add(row);
         nextPage = result.NextPage; HasMore = result.HasMore; FeedLoaded = true;
-        FeedStatus = Posts.Count == 0 ? "Nenhuma publicação encontrada. Você pode iniciar uma pergunta." : $"{Posts.Count} publicações reais carregadas";
+        FeedStatus = Posts.Count == 0 ? "Nenhuma publicação encontrada com esses filtros." : $"{Posts.Count} publicações";
         } finally { IsFeedLoading = false; }
     }
 }

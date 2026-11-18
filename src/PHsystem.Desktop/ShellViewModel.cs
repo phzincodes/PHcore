@@ -23,20 +23,20 @@ public sealed partial class MainViewModel
 {
     public IReadOnlyList<NavigationEntry> Navigation { get; } =
     [
-        new("Início", "COMPUTADOR", "M3,10 L12,3 21,10 M5,9 V21 H10 V15 H14 V21 H19 V9", "Acompanhe a saúde e o uso dos recursos do computador."),
-        new("Diagnóstico", "COMPUTADOR", "M3,12 H7 L10,5 14,19 17,12 H21", "Explore os componentes e as informações da última análise."),
-        new("Limpeza", "COMPUTADOR", "M4,7 H20 M9,7 V4 H15 V7 M6,7 L7,21 H17 L18,7 M10,10 V17 M14,10 V17", "Revise os arquivos antes de liberar espaço."),
-        new("Armazenamento", "COMPUTADOR", "M4,4 H20 V20 H4 Z M4,15 H20 M15,17 H17", "Entenda o espaço disponível e analise uma pasta."),
-        new("Drivers", "COMPUTADOR", "M7,3 V7 M12,3 V7 M17,3 V7 M7,17 V21 M12,17 V21 M17,17 V21 M3,7 H7 M17,7 H21 M3,17 H7 M17,17 H21 M7,7 H17 V17 H7 Z", "Consulte o inventário de vídeo e rede."),
-        new("PH CORE", "FERRAMENTAS", "M12,3 L21,8 V16 L12,21 3,16 V8 Z M12,7 V13 M12,16 V17", "Orientações a partir das evidências do diagnóstico."),
-        new("Modo Jogo", "FERRAMENTAS", "M7,7 H17 Q20,7 21,12 L22,17 Q22,20 19,19 L16,16 H8 L5,19 Q2,20 2,17 L3,12 Q4,7 7,7 M7,10 V15 M4.5,12.5 H9.5 M16,11 H17 M18,14 H19", "Um perfil temporário para o processo escolhido."),
-        new("Histórico", "FERRAMENTAS", "M4,8 A9,9 0 1 1 3,15 M3,3 V9 H9 M12,7 V12 L16,15", "Consulte e exporte as análises salvas neste computador."),
-        new("Comunidade", "PESSOAL", "M3,4 H21 V17 H10 L5,21 V17 H3 Z M7,8 H17 M7,12 H14", "Conta, perguntas, mensagens e perfil público."),
-        new("Privacidade", "PESSOAL", "M12,3 L20,6 V12 Q20,18 12,22 Q4,18 4,12 V6 Z M8,12 L11,15 16,9", "Controle o que permanece local e o que você compartilha."),
-        new("Hardware", "COMPUTADOR", "M4,4 H20 V17 H4 Z M8,21 H16 M12,17 V21", "Métricas ao vivo e componentes da última análise."),
-        new("Segurança", "COMPUTADOR", "M12,3 L20,6 V12 Q20,18 12,22 Q4,18 4,12 V6 Z M8,12 L11,15 16,9", "Proteções e evidências; estados parciais não equivalem a segurança comprovada."),
-        new("Desempenho", "COMPUTADOR", "M4,19 V13 M9,19 V8 M14,19 V11 M19,19 V4", "Memória e inicialização da análise. Não são métricas em tempo real."),
-        new("Configurações", "PESSOAL", "M4,6 H20 M4,12 H20 M4,18 H20 M8,3 V9 M16,9 V15 M10,15 V21", "Preferências locais do aplicativo.")
+        new("Início", "Computador", "M3,10 L12,3 21,10 M5,9 V21 H10 V15 H14 V21 H19 V9", "Recursos em tempo real e estado do computador."),
+        new("Diagnóstico", "Computador", "M3,12 H7 L10,5 14,19 17,12 H21", "Resultados, verificações e próximos passos."),
+        new("Limpeza", "Computador", "M4,7 H20 M9,7 V4 H15 V7 M6,7 L7,21 H17 L18,7 M10,10 V17 M14,10 V17", "Verifique temporários e revise a seleção."),
+        new("Armazenamento", "Computador", "M4,4 H20 V20 H4 Z M4,15 H20 M15,17 H17", "Volumes, arquivos grandes e duplicados."),
+        new("Drivers", "Computador", "M7,3 V7 M12,3 V7 M17,3 V7 M7,17 V21 M12,17 V21 M17,17 V21 M3,7 H7 M17,7 H21 M3,17 H7 M17,17 H21 M7,7 H17 V17 H7 Z", "Adaptadores de vídeo e rede."),
+        new("PH CORE", "Ferramentas", "M12,3 L21,8 V16 L12,21 3,16 V8 Z M12,7 V13 M12,16 V17", "Ações sugeridas pela última análise."),
+        new("Modo Jogo", "Ferramentas", "M7,7 H17 Q20,7 21,12 L22,17 Q22,20 19,19 L16,16 H8 L5,19 Q2,20 2,17 L3,12 Q4,7 7,7 M7,10 V15 M4.5,12.5 H9.5 M16,11 H17 M18,14 H19", "Ajuste a prioridade de um jogo."),
+        new("Histórico", "Ferramentas", "M4,8 A9,9 0 1 1 3,15 M3,3 V9 H9 M12,7 V12 L16,15", "Análises salvas, comparações e manutenção."),
+        new("Comunidade", "Conta e aplicativo", "M3,4 H21 V17 H10 L5,21 V17 H3 Z M7,8 H17 M7,12 H14", "Conta, perguntas, mensagens e perfil público."),
+        new("Privacidade", "Conta e aplicativo", "M12,3 L20,6 V12 Q20,18 12,22 Q4,18 4,12 V6 Z M8,12 L11,15 16,9", "Controle o que permanece local e o que você compartilha."),
+        new("Hardware", "Computador", "M4,4 H20 V17 H4 Z M8,21 H16 M12,17 V21", "Uso atual e inventário de componentes."),
+        new("Segurança", "Computador", "M12,3 L20,6 V12 Q20,18 12,22 Q4,18 4,12 V6 Z M8,12 L11,15 16,9", "Proteções, atualizações e ferramentas do Windows."),
+        new("Desempenho", "Computador", "M4,19 V13 M9,19 V8 M14,19 V11 M19,19 V4", "Leituras registradas de memória e inicialização."),
+        new("Configurações", "Conta e aplicativo", "M4,6 H20 M4,12 H20 M4,18 H20 M8,3 V9 M16,9 V15 M10,15 V21", "Tema, sons e organização do painel.")
     ];
     private int selectedPageIndex => (int)NavigationState.Current;
     public NavigationService NavigationState { get; } = new();
@@ -46,7 +46,7 @@ public sealed partial class MainViewModel
     private int communityTabIndex;
     private int socialTabIndex;
     public int SocialTabIndex { get => socialTabIndex; set { socialTabIndex = value; Changed(); } }
-    public int CommunityTabIndex { get => communityTabIndex; set { if (value is < 0 or > 4) return; communityTabIndex = value; Changed(); } }
+    public int CommunityTabIndex { get => communityTabIndex; set { if (value is < 0 or > 3) return; communityTabIndex = value; Changed(); } }
     public int SelectedPageIndex
     {
         get => selectedPageIndex;
@@ -58,6 +58,7 @@ public sealed partial class MainViewModel
     }
     public NavigationEntry SelectedNavigationItem { get => Navigation[selectedPageIndex]; set { var index = Navigation.ToList().IndexOf(value); if (index >= 0) SelectedPageIndex = index; } }
     public bool IsHome => selectedPageIndex == 0;
+    public bool ShowHeaderScan => NavigationState.Current is AppPage.Diagnostics or AppPage.Hardware or AppPage.Security or AppPage.Performance;
     public string PageTitle => Navigation[selectedPageIndex].Title;
     public string PageDescription => Navigation[selectedPageIndex].Description;
     public string PageGroup => Navigation[selectedPageIndex].Group;
@@ -72,6 +73,7 @@ public sealed partial class MainViewModel
     public UiCommand OpenDriversCommand { get; private set; } = null!;
     public UiCommand OpenRecommendationsCommand { get; private set; } = null!;
     public UiCommand OpenHardwareCommand { get; private set; } = null!;
+    public UiCommand OpenGameCommand { get; private set; } = null!;
     public UiCommand OpenHistoryCommand { get; private set; } = null!;
     public UiCommand OpenCommunityCommand { get; private set; } = null!;
     public UiCommand OpenSharingCommand { get; private set; } = null!;
@@ -118,7 +120,7 @@ public sealed partial class MainViewModel
         NavigationState.Changed += (_, _) =>
         {
             Changed(nameof(SelectedPageIndex)); Changed(nameof(SelectedNavigationItem)); Changed(nameof(IsHome));
-            Changed(nameof(PageTitle)); Changed(nameof(PageDescription)); Changed(nameof(PageGroup));
+            Changed(nameof(PageTitle)); Changed(nameof(PageDescription)); Changed(nameof(PageGroup)); Changed(nameof(ShowHeaderScan));
         };
         ToggleSidebarCommand = new(() => SidebarExpanded = !SidebarExpanded);
         OpenOverviewCommand = new(() => SelectedPageIndex = 0);
@@ -128,6 +130,7 @@ public sealed partial class MainViewModel
         OpenDriversCommand = new(() => SelectedPageIndex = 4);
         OpenRecommendationsCommand = new(() => SelectedPageIndex = 5);
         OpenHardwareCommand = new(() => NavigationState.Navigate(AppPage.Hardware));
+        OpenGameCommand = new(() => NavigationState.Navigate(AppPage.Game));
         OpenHistoryCommand = new(() => SelectedPageIndex = 7);
         OpenCommunityCommand = new(() => SelectedPageIndex = 8);
         OpenSharingCommand = new(() => { CommunityTabIndex = 3; SocialTabIndex = 1; SelectedPageIndex = 8; });

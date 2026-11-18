@@ -12,8 +12,11 @@ public sealed record ThemeDefinition(string Name, string Accent, string Backgrou
 
 public static class ThemeManager
 {
+    internal static readonly ThemeDefinition PreviousRedEclipse =
+        new("Red Eclipse", "#FF3347", "#07080B", "#111318", "#191C23", "#30343D");
+
     public static ThemeDefinition[] Presets { get; } = [
-        new("Red Eclipse", "#FF3347", "#07080B", "#111318", "#191C23", "#30343D"),
+        new("Red Eclipse", "#FF3347", "#07080B", "#0E1118", "#151923", "#272D3A", Radius: 14),
         new("Midnight", "#5599FF", "#060D18", "#101D30", "#192940", "#35465E"),
         new("Emerald", "#45D6A0", "#070D0C", "#11201B", "#1B2C25", "#324C40"),
         new("Violet", "#BA8BFF", "#0B0810", "#1A1324", "#261D34", "#443550"),
@@ -41,26 +44,46 @@ public static class ThemeManager
         if (new FileInfo(file).Length > 8192) throw new InvalidDataException("Tema excede 8 KiB.");
         return Validate(JsonSerializer.Deserialize<ThemeDefinition>(File.ReadAllText(file), new JsonSerializerOptions { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow }) ?? throw new InvalidDataException("Tema vazio."));
     }
-    public static void Apply(ThemeDefinition theme)
+    public static void Apply(ThemeDefinition theme, ResourceDictionary? resources = null)
     {
-        Validate(theme); if (Application.Current is null) return;
-        var resources = Application.Current.Resources;
+        Validate(theme);
+        resources ??= Application.Current?.Resources;
+        if (resources is null) return;
         void Brush(string key, string color) => resources[key] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
         Brush("BackgroundBrush", theme.Background); Brush("SidebarBrush", theme.Surface); Brush("PanelBrush", theme.Elevated);
-        Brush("InsetBrush", theme.Background); Brush("HoverBrush", theme.Elevated); Brush("BorderBrush", theme.Border);
+        Brush("InsetBrush", Blend(theme.Background, theme.Elevated, .4));
+        Brush("HoverBrush", Blend(theme.Elevated, theme.Border, .32)); Brush("BorderBrush", theme.Border);
         Brush("TextBrush", theme.Text); Brush("SecondaryBrush", theme.Secondary); Brush("MutedBrush", theme.Secondary);
-        Brush("AccentBrush", theme.Accent); Brush("AccentMutedBrush", theme.Surface);
+        Brush("AccentBrush", theme.Accent); Brush("AccentMutedBrush", Blend(theme.Surface, theme.Accent, .13));
         Brush("ActionTextBrush", Contrast(theme.Accent, "#000000") >= Contrast(theme.Accent, "#FFFFFF") ? "#000000" : "#FFFFFF");
         Brush("SecondaryAccentBrush", theme.SecondaryAccent);
         resources["ControlRadius"] = new CornerRadius(theme.Radius / 2);
         resources["ButtonPadding"] = theme.Density == "Compact" ? new Thickness(10,5,10,5) : new Thickness(14,8,14,8);
-        resources["BodyFontSize"] = 13 * theme.FontScale; resources["PanelRadius"] = new CornerRadius(theme.Radius);
+        resources["BodyFontSize"] = 14 * theme.FontScale; resources["PanelRadius"] = new CornerRadius(theme.Radius);
+    }
+
+    private static string Blend(string from, string to, double amount)
+    {
+        var start = (Color)ColorConverter.ConvertFromString(from);
+        var end = (Color)ColorConverter.ConvertFromString(to);
+        byte Mix(byte a, byte b) => (byte)Math.Round(a + (b - a) * amount);
+        return $"#{Mix(start.R, end.R):X2}{Mix(start.G, end.G):X2}{Mix(start.B, end.B):X2}";
     }
 }
 
 public sealed partial class UiPreferences
 {
-    public ThemeDefinition CurrentTheme { get { try { return ThemeManager.Validate(values.Theme ?? ThemeManager.Presets[0]); } catch (InvalidDataException) { return ThemeManager.Presets[0]; } } }
+    public ThemeDefinition CurrentTheme
+    {
+        get
+        {
+            if (values.Theme is null || values.Theme == ThemeManager.PreviousRedEclipse)
+                return ThemeManager.Presets[0];
+
+            try { return ThemeManager.Validate(values.Theme); }
+            catch (InvalidDataException) { return ThemeManager.Presets[0]; }
+        }
+    }
     public string[] ThemeNames => ThemeManager.Presets.Concat(SavedThemes).Select(p => p.Name).Distinct(StringComparer.OrdinalIgnoreCase).Append("Personalizado").ToArray();
     public string ThemeName { get => ThemeManager.Presets.Concat(SavedThemes).Any(t => t == CurrentTheme) ? CurrentTheme.Name : "Personalizado"; set { var theme = ThemeManager.Presets.Concat(SavedThemes).FirstOrDefault(p => p.Name == value); if (theme is not null) SetTheme(theme); } }
     private string? customAccent, customName;

@@ -2,21 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:components="clr-namespace:PHsystem.Desktop.Components">
-  <UserControl.Resources><BooleanToVisibilityConverter x:Key="HasReading" /></UserControl.Resources>
+  <UserControl.Resources><BooleanToVisibilityConverter x:Key="BoolVisibility" /></UserControl.Resources>
   <ItemsControl ItemsSource="{Binding Metrics}">
-    <ItemsControl.ItemsPanel><ItemsPanelTemplate><components:ResponsivePanel MinimumColumnWidth="182" Gap="12" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate><components:ResponsivePanel MinimumColumnWidth="170" Gap="12" /></ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
       <DataTemplate>
         <Border Style="{DynamicResource Panel}" Padding="14">
           <StackPanel>
-            <DockPanel>
-              <TextBlock Text="{Binding ShortName}" DockPanel.Dock="Right" Foreground="{DynamicResource AccentBrush}"
-                         FontSize="11" FontWeight="SemiBold" Margin="7,0,0,0" />
-              <TextBlock Text="{Binding Title}" Style="{DynamicResource Caption}" FontWeight="SemiBold" />
-            </DockPanel>
-            <TextBlock Text="{Binding ValueLabel}" FontWeight="SemiBold" FontSize="22" LineHeight="28" Margin="0,7,0,4" />
-            <ProgressBar Value="{Binding Value, Mode=OneWay, TargetNullValue=0}" Maximum="100" Height="4" Margin="0,2,0,6"
-                         Visibility="{Binding HasValue, Converter={StaticResource HasReading}}" AutomationProperties.Name="{Binding Title}" />
+            <TextBlock Text="{Binding Title}" Style="{DynamicResource Caption}" />
+            <TextBlock Text="{Binding ValueLabel}" FontSize="21" FontWeight="SemiBold" Margin="0,4" />
+            <ProgressBar Value="{Binding Value, Mode=OneWay, TargetNullValue=0}" Height="4" Margin="0,3,0,7"
+                         Visibility="{Binding HasValue, Converter={StaticResource BoolVisibility}}" AutomationProperties.Name="{Binding Title}" />
             <TextBlock Text="{Binding Detail}" Style="{DynamicResource Caption}" />
           </StackPanel>
         </Border>

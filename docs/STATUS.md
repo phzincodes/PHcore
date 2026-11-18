@@ -1,3 +1,13 @@
+# PHcore · reformulação do aplicativo Windows · prévia 0.3.0-preview.2
+
+As 14 áreas do aplicativo receberam navegação por grupos, ações junto aos dados e detalhes técnicos sob demanda. O Resumo do diagnóstico mostra o próximo passo de cada alerta. Limpeza e exploração de pastas apresentam a seleção, os resultados e o escopo de cada operação. O Início e o Hardware usam a coleta de telemetria compartilhada. O perfil de jogo exibe seu estado real, com ação de restauração.
+
+Em Configurações, a troca rápida de destaque usa as paletas existentes e o editor exato continua disponível nos controles avançados. Os temas personalizados, o banco local e as preferências existentes são compatíveis com a nova interface. Na comunidade, perguntas e respostas passaram a usar o mesmo feed, com áreas de sessão, mensagens e compartilhamento separadas.
+
+O build Release com SDK 10.0.404 e `EnableWindowsTargeting=true` compilou sem erros ou avisos no ambiente Linux. A suíte do Windows verifica a navegação, a galeria de temas, a abertura da janela e o estado inicial recolhido do editor avançado.
+
+---
+
 # PHcore · integração Windows · 2026-11-17
 
 Base PHsys2 `0c7cbce`. O Início Red Eclipse ganhou cards WPF UI, faixa de saúde com cobertura e telemetria local compartilhada com Hardware. O gráfico do LiveCharts2 usa a API em memória para conservar o alvo `net10.0-windows`. A integração também inclui sensores do LibreHardwareMonitor, saída opcional do ping via CliWrap, logs Serilog e uma migração aditiva para o histórico SQLite. Veja [integração e testes no Windows](INTEGRACAO-WINDOWS.md).
