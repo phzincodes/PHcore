@@ -4,7 +4,9 @@ As 14 áreas do aplicativo receberam navegação por grupos, ações junto aos d
 
 Em Configurações, a troca rápida de destaque usa as paletas existentes e o editor exato continua disponível nos controles avançados. Os temas personalizados, o banco local e as preferências existentes são compatíveis com a nova interface. Na comunidade, perguntas e respostas passaram a usar o mesmo feed, com áreas de sessão, mensagens e compartilhamento separadas.
 
-O build Release com SDK 10.0.404 e `EnableWindowsTargeting=true` compilou sem erros ou avisos no ambiente Linux. A suíte do Windows verifica a navegação, a galeria de temas, a abertura da janela e o estado inicial recolhido do editor avançado.
+O build Release com SDK 10.0.404 e `EnableWindowsTargeting=true` compilou sem erros ou avisos no ambiente Linux. O GitHub Actions aprovou 191 testes no Windows, incluindo 63 de interface. A suíte verificou abertura da janela, navegação FlaUI, dimensões lógicas em diferentes escalas, troca de tema e editor avançado inicialmente recolhido. Os dois casos de integração com PostgreSQL ignorados no Windows passaram no job de backend. A auditoria de pacotes não encontrou vulnerabilidades conhecidas nas fontes consultadas. [Validação Windows](https://github.com/phzincodes/PHcore/actions/runs/44205146947) · [Backend e PostgreSQL](https://github.com/phzincodes/PHcore/actions/runs/44205146910)
+
+O Velopack 1.2.161 gerou o instalador x64 autocontido e verificou o bootstrap no executável. O ZIP de 89.357.535 bytes passou na verificação de integridade e inclui o SHA-256 do Setup. A instalação em máquina limpa, a leitura dos sensores físicos no computador do usuário e o acesso a uma API de produção continuam pendentes. A prévia é sem assinatura digital. [Código da prévia](https://github.com/phzincodes/PHcore/commit/507ee7ddae27535038b7b63bef43459e89a9b1bd)
 
 ---
 
